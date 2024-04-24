@@ -400,7 +400,7 @@ fn reinvesting() {
         Delegation::new("bob", 333333, "uxyz"),
         Delegation::new("charlie", 333333, "uxyz"),
     ]);
-    state.prev_denom.save(deps.as_mut().storage, &Uint128::from(0 as u32)).unwrap();
+    state.prev_denom.save(deps.as_mut().storage, &Uint128::zero()).unwrap();
     deps.querier.set_bank_balances(&[Coin::new(234u128, "uxyz")]);
 
     // After the swaps, `unlocked_coins` should contain only uxyz and unknown denoms
@@ -472,7 +472,7 @@ fn reinvesting_fee_split() {
         Delegation::new("bob", 333333, "uxyz"),
         Delegation::new("charlie", 333333, "uxyz"),
     ]);
-    state.prev_denom.save(deps.as_mut().storage, &Uint128::from(0 as u32)).unwrap();
+    state.prev_denom.save(deps.as_mut().storage, &Uint128::zero()).unwrap();
     deps.querier.set_bank_balances(&[Coin::new(234u128, "uxyz")]);
 
     // After the swaps, `unlocked_coins` should contain only uxyz and unknown denoms
@@ -618,10 +618,10 @@ fn queuing_unbond() {
 
     // The users' unbonding requests should have been saved
     let ubr1 = unbond_requests()
-        .load(deps.as_ref().storage, (1u64.into(), &Addr::unchecked("user_1").to_string()))
+        .load(deps.as_ref().storage, (1u64, Addr::unchecked("user_1").as_ref()))
         .unwrap();
     let ubr2 = unbond_requests()
-        .load(deps.as_ref().storage, (1u64.into(), &Addr::unchecked("user_3").to_string()))
+        .load(deps.as_ref().storage, (1u64, Addr::unchecked("user_3").as_ref()))
         .unwrap();
 
     assert_eq!(
@@ -686,7 +686,7 @@ fn submitting_batch() {
         unbond_requests()
             .save(
                 deps.as_mut().storage,
-                (unbond_request.id.into(), &Addr::unchecked(unbond_request.user.clone()).as_str()),
+                (unbond_request.id, &Addr::unchecked(unbond_request.user.clone()).as_str()),
                 unbond_request,
             )
             .unwrap();
@@ -781,7 +781,7 @@ fn submitting_batch() {
     );
 
     // Previous batch should have been updated
-    let previous_batch = previous_batches().load(deps.as_ref().storage, 1u64.into()).unwrap();
+    let previous_batch = previous_batches().load(deps.as_ref().storage, 1u64).unwrap();
     assert_eq!(
         previous_batch,
         Batch {
@@ -831,9 +831,7 @@ fn reconciling() {
     ];
 
     for previous_batch in &previous_batch_list {
-        previous_batches()
-            .save(deps.as_mut().storage, previous_batch.id.into(), previous_batch)
-            .unwrap();
+        previous_batches().save(deps.as_mut().storage, previous_batch.id, previous_batch).unwrap();
     }
 
     state
@@ -877,7 +875,7 @@ fn reconciling() {
     // remainder: 0
     // batch 2: 1385 - 273 = 1112
     // batch 3: 1506 - 273 = 1233
-    let batch = previous_batches().load(deps.as_ref().storage, 2u64.into()).unwrap();
+    let batch = previous_batches().load(deps.as_ref().storage, 2u64).unwrap();
     assert_eq!(
         batch,
         Batch {
@@ -889,7 +887,7 @@ fn reconciling() {
         }
     );
 
-    let batch = previous_batches().load(deps.as_ref().storage, 3u64.into()).unwrap();
+    let batch = previous_batches().load(deps.as_ref().storage, 3u64).unwrap();
     assert_eq!(
         batch,
         Batch {
@@ -902,10 +900,10 @@ fn reconciling() {
     );
 
     // Batches 1 and 4 should not have changed
-    let batch = previous_batches().load(deps.as_ref().storage, 1u64.into()).unwrap();
+    let batch = previous_batches().load(deps.as_ref().storage, 1u64).unwrap();
     assert_eq!(batch, previous_batch_list[0]);
 
-    let batch = previous_batches().load(deps.as_ref().storage, 4u64.into()).unwrap();
+    let batch = previous_batches().load(deps.as_ref().storage, 4u64).unwrap();
     assert_eq!(batch, previous_batch_list[3]);
 }
 
@@ -950,7 +948,7 @@ fn withdrawing_unbonded() {
         unbond_requests()
             .save(
                 deps.as_mut().storage,
-                (unbond_request.id.into(), &Addr::unchecked(unbond_request.user.clone()).as_str()),
+                (unbond_request.id, &Addr::unchecked(unbond_request.user.clone()).as_str()),
                 unbond_request,
             )
             .unwrap();
@@ -989,9 +987,7 @@ fn withdrawing_unbonded() {
     ];
 
     for previous_batch in &previous_batch_list {
-        previous_batches()
-            .save(deps.as_mut().storage, previous_batch.id.into(), previous_batch)
-            .unwrap();
+        previous_batches().save(deps.as_mut().storage, previous_batch.id, previous_batch).unwrap();
     }
 
     state
@@ -1055,7 +1051,7 @@ fn withdrawing_unbonded() {
     );
 
     // Previous batches should have been updated
-    let batch = previous_batches().load(deps.as_ref().storage, 1u64.into()).unwrap();
+    let batch = previous_batches().load(deps.as_ref().storage, 1u64).unwrap();
     assert_eq!(
         batch,
         Batch {
@@ -1067,7 +1063,7 @@ fn withdrawing_unbonded() {
         }
     );
 
-    let err = previous_batches().load(deps.as_ref().storage, 2u64.into()).unwrap_err();
+    let err = previous_batches().load(deps.as_ref().storage, 2u64).unwrap_err();
     match err {
         StdError::NotFound {
             ..
@@ -1079,10 +1075,10 @@ fn withdrawing_unbonded() {
 
     // User 1's unbond requests in batches 1 and 2 should have been deleted
     let err1 = unbond_requests()
-        .load(deps.as_ref().storage, (1u64.into(), &Addr::unchecked("user_1").as_str()))
+        .load(deps.as_ref().storage, (1u64, &Addr::unchecked("user_1").as_str()))
         .unwrap_err();
     let err2 = unbond_requests()
-        .load(deps.as_ref().storage, (1u64.into(), &Addr::unchecked("user_1").as_str()))
+        .load(deps.as_ref().storage, (1u64, &Addr::unchecked("user_1").as_str()))
         .unwrap_err();
 
     match err1 {
@@ -1129,7 +1125,7 @@ fn withdrawing_unbonded() {
     );
 
     // Batch 1 and user 2's unbonding request should have been purged from storage
-    let err = previous_batches().load(deps.as_ref().storage, 1u64.into()).unwrap_err();
+    let err = previous_batches().load(deps.as_ref().storage, 1u64).unwrap_err();
     match err {
         StdError::NotFound {
             ..
@@ -1140,7 +1136,7 @@ fn withdrawing_unbonded() {
     };
 
     let err = unbond_requests()
-        .load(deps.as_ref().storage, (1u64.into(), &Addr::unchecked("user_3").as_str()))
+        .load(deps.as_ref().storage, (1u64, &Addr::unchecked("user_3").as_str()))
         .unwrap_err();
 
     match err {
@@ -1460,7 +1456,7 @@ fn querying_previous_batches() {
 
     //let state = State::default();
     for batch in &batches {
-        previous_batches().save(deps.as_mut().storage, batch.id.into(), batch).unwrap();
+        previous_batches().save(deps.as_mut().storage, batch.id, batch).unwrap();
     }
 
     // Querying a single batch
@@ -1558,7 +1554,7 @@ fn querying_unbond_requests() {
         unbond_requests()
             .save(
                 deps.as_mut().storage,
-                (unbond_request.id.into(), &Addr::unchecked(unbond_request.user.clone()).as_str()),
+                (unbond_request.id, &Addr::unchecked(unbond_request.user.clone()).as_str()),
                 unbond_request,
             )
             .unwrap();
@@ -1724,7 +1720,7 @@ fn computing_redelegations_for_rebalancing() {
         compute_redelegations_for_rebalancing(
             active_validators,
             &current_delegations,
-            Uint128::from(10 as u64)
+            Uint128::from(10u64)
         ),
         expected,
     );
@@ -1741,7 +1737,7 @@ fn computing_redelegations_for_rebalancing() {
         compute_redelegations_for_rebalancing(
             partially_active.clone(),
             &current_delegations,
-            Uint128::from(10 as u64)
+            Uint128::from(10u64)
         ),
         partially_expected,
     );
@@ -1754,7 +1750,7 @@ fn computing_redelegations_for_rebalancing() {
         compute_redelegations_for_rebalancing(
             partially_active,
             &current_delegations,
-            Uint128::from(15_000 as u64)
+            Uint128::from(15_000u64)
         ),
         partially_expected_minimums,
     );

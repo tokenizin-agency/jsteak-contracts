@@ -43,5 +43,5 @@ pub(super) fn mock_env_at_timestamp(timestamp: u64) -> Env {
 pub(super) fn query_helper<T: DeserializeOwned>(deps: Deps, msg: QueryMsg) -> T {
     let bin = query(deps, mock_env(), msg).unwrap();
     //eprintln!("Query Response {:?}",&bin);
-    from_json(&bin).unwrap()
+    from_json(bin).unwrap()
 }

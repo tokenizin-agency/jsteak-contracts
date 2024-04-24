@@ -79,7 +79,7 @@ impl CustomQuerier {
                 msg,
             }) => {
                 if let Ok(query) = from_json::<Cw20QueryMsg>(msg) {
-                    return self.cw20_querier.handle_query(&contract_addr, query);
+                    return self.cw20_querier.handle_query(contract_addr, query);
                 }
 
                 err_unsupported_query(msg)
