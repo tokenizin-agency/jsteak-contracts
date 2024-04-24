@@ -1,6 +1,10 @@
 use std::str::FromStr;
 
-use cosmwasm_std::{testing::{mock_env, mock_info, MockApi, MockStorage, MOCK_CONTRACT_ADDR},  Addr, BankMsg, Coin, CosmosMsg, Decimal, DistributionMsg, Order, OwnedDeps, ReplyOn, StdError, SubMsg, Uint128, WasmMsg, to_json_binary};
+use cosmwasm_std::{
+    testing::{mock_env, mock_info, MockApi, MockStorage, MOCK_CONTRACT_ADDR},
+    to_json_binary, Addr, BankMsg, Coin, CosmosMsg, Decimal, DistributionMsg, Order, OwnedDeps,
+    ReplyOn, StdError, SubMsg, Uint128, WasmMsg,
+};
 use pfc_steak::{
     hub::{
         Batch, CallbackMsg, ConfigResponse, PendingBatch, QueryMsg, StateResponse, UnbondRequest,
@@ -1064,11 +1068,14 @@ fn withdrawing_unbonded() {
     );
 
     let err = previous_batches().load(deps.as_ref().storage, 2u64.into()).unwrap_err();
-    match err { StdError::NotFound {..} => {}, _=> {
-        panic!("Should have been not found")
-    } };
-
-    
+    match err {
+        StdError::NotFound {
+            ..
+        } => {},
+        _ => {
+            panic!("Should have been not found")
+        },
+    };
 
     // User 1's unbond requests in batches 1 and 2 should have been deleted
     let err1 = unbond_requests()
@@ -1078,14 +1085,23 @@ fn withdrawing_unbonded() {
         .load(deps.as_ref().storage, (1u64.into(), &Addr::unchecked("user_1").as_str()))
         .unwrap_err();
 
-    match err1 { StdError::NotFound {..} => {}, _=> {
-        panic!("Should have been not found")
-    } };
+    match err1 {
+        StdError::NotFound {
+            ..
+        } => {},
+        _ => {
+            panic!("Should have been not found")
+        },
+    };
 
-    match err2 { StdError::NotFound {..} => {}, _=> {
-        panic!("Should have been not found")
-    } };
-
+    match err2 {
+        StdError::NotFound {
+            ..
+        } => {},
+        _ => {
+            panic!("Should have been not found")
+        },
+    };
 
     // User 3 attempt to withdraw; also specifying a receiver
     let res = execute(
@@ -1114,19 +1130,27 @@ fn withdrawing_unbonded() {
 
     // Batch 1 and user 2's unbonding request should have been purged from storage
     let err = previous_batches().load(deps.as_ref().storage, 1u64.into()).unwrap_err();
-    match err { StdError::NotFound {..} => {}, _=> {
-        panic!("Should have been not found")
-    } };
-
+    match err {
+        StdError::NotFound {
+            ..
+        } => {},
+        _ => {
+            panic!("Should have been not found")
+        },
+    };
 
     let err = unbond_requests()
         .load(deps.as_ref().storage, (1u64.into(), &Addr::unchecked("user_3").as_str()))
         .unwrap_err();
 
-    match err { StdError::NotFound {..} => {}, _=> {
-        panic!("Should have been not found")
-    } };
-
+    match err {
+        StdError::NotFound {
+            ..
+        } => {},
+        _ => {
+            panic!("Should have been not found")
+        },
+    };
 }
 
 #[test]

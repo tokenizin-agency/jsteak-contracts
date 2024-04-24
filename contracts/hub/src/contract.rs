@@ -1,8 +1,8 @@
 use std::convert::TryInto;
 
 use cosmwasm_std::{
-    entry_point, from_json, to_json_binary, Binary, Decimal, Deps, DepsMut, Env, MessageInfo, Reply,
-    Response, StdError, StdResult,
+    entry_point, from_json, to_json_binary, Binary, Decimal, Deps, DepsMut, Env, MessageInfo,
+    Reply, Response, StdError, StdResult,
 };
 use cw2::{get_contract_version, set_contract_version, ContractVersion};
 use cw20::Cw20ReceiveMsg;

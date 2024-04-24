@@ -50,7 +50,6 @@ impl Coins {
             .iter()
             .find(|coin| coin.denom == denom)
             .cloned()
-
             .unwrap_or_else(|| Coin::new(0, denom))
     }
 }
