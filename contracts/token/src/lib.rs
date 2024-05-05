@@ -1,6 +1,5 @@
 use cosmwasm_std::{
-    Addr, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult,
-    Storage,
+    Addr, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult, Storage,
 };
 use cw20_base::{
     contract::{execute as cw20_execute, instantiate as cw20_instantiate, query as cw20_query},
