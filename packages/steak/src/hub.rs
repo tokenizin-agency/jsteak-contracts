@@ -1,3 +1,4 @@
+use std::fmt::Display;
 use std::str::FromStr;
 
 use cosmwasm_std::{
@@ -148,8 +149,8 @@ pub enum ExecuteMsg {
     ReturnDenom {},
     /// admin: setBaseDenom - in case you muck up the init and need to change it
     SetBaseDenom {
-        new_denom: String
-    }
+        new_denom: String,
+    },
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq, JsonSchema)]
@@ -342,11 +343,12 @@ impl FromStr for FeeType {
     }
 }
 
-impl ToString for FeeType {
-    fn to_string(&self) -> String {
-        match &self {
+impl Display for FeeType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let str = match &self {
             FeeType::Wallet => String::from("Wallet"),
             FeeType::FeeSplit => String::from("FeeSplit"),
-        }
+        };
+        write!(f, "{}", str)
     }
 }

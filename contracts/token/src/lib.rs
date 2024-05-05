@@ -1,5 +1,5 @@
 use cosmwasm_std::{
-    entry_point, Addr, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult,
+    Addr, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult,
     Storage,
 };
 use cw20_base::{
@@ -9,7 +9,7 @@ use cw20_base::{
     ContractError,
 };
 
-#[cfg_attr(not(feature = "library"), entry_point)]
+//#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
     deps: DepsMut,
     env: Env,
@@ -19,7 +19,7 @@ pub fn instantiate(
     cw20_instantiate(deps, env, info, msg)
 }
 
-#[cfg_attr(not(feature = "library"), entry_point)]
+//#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn execute(
     deps: DepsMut,
     env: Env,
@@ -57,7 +57,7 @@ fn assert_minter(storage: &dyn Storage, sender: &Addr) -> Result<(), ContractErr
     Ok(())
 }
 
-#[cfg_attr(not(feature = "library"), entry_point)]
+//#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
     cw20_query(deps, env, msg)
 }

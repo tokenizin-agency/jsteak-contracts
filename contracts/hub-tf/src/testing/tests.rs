@@ -686,7 +686,7 @@ fn submitting_batch() {
         unbond_requests()
             .save(
                 deps.as_mut().storage,
-                (unbond_request.id, &Addr::unchecked(unbond_request.user.clone()).as_str()),
+                (unbond_request.id, Addr::unchecked(unbond_request.user.clone()).as_str()),
                 unbond_request,
             )
             .unwrap();
@@ -948,7 +948,7 @@ fn withdrawing_unbonded() {
         unbond_requests()
             .save(
                 deps.as_mut().storage,
-                (unbond_request.id, &Addr::unchecked(unbond_request.user.clone()).as_str()),
+                (unbond_request.id, Addr::unchecked(unbond_request.user.clone()).as_str()),
                 unbond_request,
             )
             .unwrap();
@@ -1075,10 +1075,10 @@ fn withdrawing_unbonded() {
 
     // User 1's unbond requests in batches 1 and 2 should have been deleted
     let err1 = unbond_requests()
-        .load(deps.as_ref().storage, (1u64, &Addr::unchecked("user_1").as_str()))
+        .load(deps.as_ref().storage, (1u64, Addr::unchecked("user_1").as_str()))
         .unwrap_err();
     let err2 = unbond_requests()
-        .load(deps.as_ref().storage, (1u64, &Addr::unchecked("user_1").as_str()))
+        .load(deps.as_ref().storage, (1u64, Addr::unchecked("user_1").as_str()))
         .unwrap_err();
 
     match err1 {
@@ -1136,7 +1136,7 @@ fn withdrawing_unbonded() {
     };
 
     let err = unbond_requests()
-        .load(deps.as_ref().storage, (1u64, &Addr::unchecked("user_3").as_str()))
+        .load(deps.as_ref().storage, (1u64, Addr::unchecked("user_3").as_str()))
         .unwrap_err();
 
     match err {
@@ -1554,7 +1554,7 @@ fn querying_unbond_requests() {
         unbond_requests()
             .save(
                 deps.as_mut().storage,
-                (unbond_request.id, &Addr::unchecked(unbond_request.user.clone()).as_str()),
+                (unbond_request.id, Addr::unchecked(unbond_request.user.clone()).as_str()),
                 unbond_request,
             )
             .unwrap();

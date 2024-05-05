@@ -1,3 +1,4 @@
+use std::fmt::Display;
 use std::str::FromStr;
 
 use cosmwasm_schema::cw_serde;
@@ -13,14 +14,15 @@ pub enum TokenFactoryType {
     Injective = 3,
     Osmosis = 4,
 }
-impl ToString for TokenFactoryType {
-    fn to_string(&self) -> String {
-        match &self {
+impl Display for TokenFactoryType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let str = match &self {
             TokenFactoryType::CosmWasm => String::from("CosmWasm"),
             TokenFactoryType::Kujira => String::from("Kujira"),
             TokenFactoryType::Injective => String::from("Injective"),
             TokenFactoryType::Osmosis => String::from("Osmosis"),
-        }
+        };
+        write!(f, "{}", str)
     }
 }
 impl FromStr for TokenFactoryType {
@@ -157,7 +159,7 @@ pub enum ExecuteMsg {
     ReturnDenom {},
     /// admin: setBaseDenom - in case you muck up the init and need to change it
     SetBaseDenom {
-        new_denom: String
+        new_denom: String,
     },
     /// change tokenfactory type (ADMIN only)
     ChangeTokenFactory {

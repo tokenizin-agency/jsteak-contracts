@@ -125,7 +125,9 @@ pub fn execute(deps: DepsMut, env: Env, info: MessageInfo, msg: ExecuteMsg) -> S
         ExecuteMsg::ReturnDenom {} => {
             execute::bond(deps, env, info.sender, info.funds, None, false)
         },
-        ExecuteMsg::SetBaseDenom {new_denom} => execute::set_base_denom(deps,info.sender,new_denom),
+        ExecuteMsg::SetBaseDenom {
+            new_denom,
+        } => execute::set_base_denom(deps, info.sender, new_denom),
         ExecuteMsg::ChangeTokenFactory {
             token_factory_type,
         } => execute::change_token_factory(deps, info.sender, &token_factory_type),

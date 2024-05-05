@@ -1185,18 +1185,13 @@ pub fn redelegate(
         .add_event(event)
         .add_attribute("action", "steakhub/redelegate"))
 }
-pub fn set_base_denom(
-    deps: DepsMut,
-    sender: Addr,
-    new_denom: String,
-) -> StdResult<Response> {
+pub fn set_base_denom(deps: DepsMut, sender: Addr, new_denom: String) -> StdResult<Response> {
     let state = State::default();
 
     state.assert_owner(deps.storage, &sender)?;
     state.denom.save(deps.storage, &new_denom)?;
 
-    let event = Event::new("steak/set_base_denom")
-        .add_attribute("base_denom", new_denom);
+    let event = Event::new("steak/set_base_denom").add_attribute("base_denom", new_denom);
 
     Ok(Response::new().add_event(event).add_attribute("action", "steakhub/set_base_denom"))
 }
