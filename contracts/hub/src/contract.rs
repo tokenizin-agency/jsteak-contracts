@@ -128,6 +128,7 @@ pub fn execute(deps: DepsMut, env: Env, info: MessageInfo, msg: ExecuteMsg) -> S
             }
         },
         ExecuteMsg::ReturnDenom {} => execute::return_denom(deps, env, info.funds),
+        ExecuteMsg::SetBaseDenom {new_denom} => execute::set_base_denom(deps,info.sender, new_denom)
     }
 }
 

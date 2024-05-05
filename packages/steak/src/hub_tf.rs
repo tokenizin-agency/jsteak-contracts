@@ -155,6 +155,10 @@ pub enum ExecuteMsg {
     },
     /// Return the Dust in shiny 'base denom'
     ReturnDenom {},
+    /// admin: setBaseDenom - in case you muck up the init and need to change it
+    SetBaseDenom {
+        new_denom: String
+    },
     /// change tokenfactory type (ADMIN only)
     ChangeTokenFactory {
         token_factory_type: String,

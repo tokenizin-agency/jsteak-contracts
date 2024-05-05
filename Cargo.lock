@@ -492,8 +492,8 @@ checksum = "c8cbd1169bd7b4a0a20d92b9af7a7e0422888bd38a6f5ec29c1fd8c1558a272e"
 
 [[package]]
 name = "funds-distributor-api"
-version = "0.1.0"
-source = "git+https://github.com/terra-money/enterprise-contracts.git?branch=main#6d736c0bbc1a6ac52d862c8b80d63be6bb43d419"
+version = "1.0.0"
+source = "git+https://github.com/terra-money/enterprise-contracts.git?branch=main#847a3eece581f1e3be23c0cf43e2f9dc8c2b94f4"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
@@ -673,7 +673,7 @@ dependencies = [
 
 [[package]]
 name = "pfc-steak"
-version = "3.0.15"
+version = "3.0.16"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
@@ -685,7 +685,7 @@ dependencies = [
 
 [[package]]
 name = "pfc-steak-hub"
-version = "3.0.15"
+version = "3.0.16"
 dependencies = [
  "cosmwasm-std",
  "cw-storage-plus 0.13.4",
@@ -700,7 +700,7 @@ dependencies = [
 
 [[package]]
 name = "pfc-steak-hub-tf"
-version = "3.0.15"
+version = "3.0.16"
 dependencies = [
  "cosmwasm-std",
  "cw-item-set",

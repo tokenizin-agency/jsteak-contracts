@@ -146,6 +146,10 @@ pub enum ExecuteMsg {
     },
     /// Return the Dust in shiny 'base denom'
     ReturnDenom {},
+    /// admin: setBaseDenom - in case you muck up the init and need to change it
+    SetBaseDenom {
+        new_denom: String
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq, JsonSchema)]
