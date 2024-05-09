@@ -653,48 +653,51 @@ pub fn submit_batch(deps: DepsMut, env: Env) -> StdResult<Response> {
         })
         .collect::<Vec<_>>();
 
-    let burn_msg = match token_factory_type {
-        TokenFactoryType::Kujira => {
-            <kujira::denom::MsgBurn as Into<CosmosMsg>>::into(kujira::denom::MsgBurn {
-                sender: env.contract.address.to_string(),
-                amount: Some(kujira::denom::Coin {
-                    denom: steak_denom,
-                    amount: pending_batch.usteak_to_burn.to_string(),
-                }),
-            })
-        },
-        TokenFactoryType::CosmWasm => <token_factory::denom::MsgBurn as Into<CosmosMsg>>::into(
-            token_factory::denom::MsgBurn {
-                sender: env.contract.address.to_string(),
-                amount: Some(token_factory::denom::Coin {
-                    denom: steak_denom,
-                    amount: pending_batch.usteak_to_burn.to_string(),
-                }),
+    let mut msgs = vec![];
+    if !pending_batch.usteak_to_burn.is_zero() {
+        let burn_msg = match token_factory_type {
+            TokenFactoryType::Kujira => {
+                <kujira::denom::MsgBurn as Into<CosmosMsg>>::into(kujira::denom::MsgBurn {
+                    sender: env.contract.address.to_string(),
+                    amount: Some(kujira::denom::Coin {
+                        denom: steak_denom,
+                        amount: pending_batch.usteak_to_burn.to_string(),
+                    }),
+                })
             },
-        ),
-        TokenFactoryType::Injective => {
-            <injective::denom::MsgBurn as Into<CosmosMsg>>::into(injective::denom::MsgBurn {
-                sender: env.contract.address.to_string(),
-                amount: Some(injective::denom::Coin {
-                    denom: steak_denom,
-                    amount: pending_batch.usteak_to_burn.to_string(),
-                }),
-            })
-        },
-        TokenFactoryType::Osmosis => {
-            <osmosis::denom::MsgBurn as Into<CosmosMsg>>::into(osmosis::denom::MsgBurn {
-                sender: env.contract.address.to_string(),
-                amount: Some(osmosis::denom::Coin {
-                    denom: steak_denom,
-                    amount: pending_batch.usteak_to_burn.to_string(),
-                }),
-                burn_from_address: env.contract.address.to_string(),
-            })
-        },
-    };
-    // yes.. this will fail if supply is less than the amount to burn. this is intentional.
-    state.steak_minted.save(deps.storage, &(usteak_supply - pending_batch.usteak_to_burn))?;
-
+            TokenFactoryType::CosmWasm => <token_factory::denom::MsgBurn as Into<CosmosMsg>>::into(
+                token_factory::denom::MsgBurn {
+                    sender: env.contract.address.to_string(),
+                    amount: Some(token_factory::denom::Coin {
+                        denom: steak_denom,
+                        amount: pending_batch.usteak_to_burn.to_string(),
+                    }),
+                },
+            ),
+            TokenFactoryType::Injective => {
+                <injective::denom::MsgBurn as Into<CosmosMsg>>::into(injective::denom::MsgBurn {
+                    sender: env.contract.address.to_string(),
+                    amount: Some(injective::denom::Coin {
+                        denom: steak_denom,
+                        amount: pending_batch.usteak_to_burn.to_string(),
+                    }),
+                })
+            },
+            TokenFactoryType::Osmosis => {
+                <osmosis::denom::MsgBurn as Into<CosmosMsg>>::into(osmosis::denom::MsgBurn {
+                    sender: env.contract.address.to_string(),
+                    amount: Some(osmosis::denom::Coin {
+                        denom: steak_denom,
+                        amount: pending_batch.usteak_to_burn.to_string(),
+                    }),
+                    burn_from_address: env.contract.address.to_string(),
+                })
+            },
+        };
+        // yes.. this will fail if supply is less than the amount to burn. this is intentional.
+        state.steak_minted.save(deps.storage, &(usteak_supply - pending_batch.usteak_to_burn))?;
+        msgs.push(burn_msg);
+    }
     let event = Event::new("steakhub/unbond_submitted")
         .add_attribute("time", env.block.time.seconds().to_string())
         .add_attribute("height", env.block.height.to_string())
@@ -704,7 +707,7 @@ pub fn submit_batch(deps: DepsMut, env: Env) -> StdResult<Response> {
 
     Ok(Response::new()
         .add_submessages(undelegate_submsgs)
-        .add_message(burn_msg)
+        .add_messages(msgs)
         .add_event(event)
         .add_attribute("action", "steakhub/unbond"))
 }
