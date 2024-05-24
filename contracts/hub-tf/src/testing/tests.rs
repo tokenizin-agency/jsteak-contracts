@@ -5,7 +5,7 @@ use cosmwasm_std::{
     to_json_binary, Addr, BankMsg, Coin, CosmosMsg, Decimal, DistributionMsg, Order, OwnedDeps,
     ReplyOn, StdError, SubMsg, Uint128, WasmMsg,
 };
-use pfc_steak::{
+use steak::{
     hub::{
         Batch, CallbackMsg, ConfigResponse, PendingBatch, QueryMsg, StateResponse, UnbondRequest,
         UnbondRequestsByBatchResponseItem, UnbondRequestsByUserResponseItem,

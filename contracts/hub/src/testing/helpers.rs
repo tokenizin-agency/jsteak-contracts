@@ -4,8 +4,8 @@ use cosmwasm_std::{
     Addr, BlockInfo, ContractInfo, Deps, Env, OwnedDeps, QuerierResult, SystemError, SystemResult,
     Timestamp,
 };
-use pfc_steak::hub::QueryMsg;
 use serde::de::DeserializeOwned;
+use steak::hub::QueryMsg;
 
 use super::custom_querier::CustomQuerier;
 use crate::contract::query;

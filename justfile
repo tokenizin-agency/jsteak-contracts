@@ -10,6 +10,10 @@ format:
 test:
   cargo test
 
+schema:
+  cd contracts && 
+  cargo run --bin schema
+
 optimize:
   if [[ $(uname -m) =~ "arm64" ]]; then \
     just optimize-arm; else \

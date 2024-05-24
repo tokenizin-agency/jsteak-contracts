@@ -1,7 +1,7 @@
 use cosmwasm_std::{Addr, Order, QuerierWrapper, StdError, StdResult, Storage, Uint128};
 use cw_storage_plus::{Index, IndexList, IndexedMap, MultiIndex};
-use pfc_steak::hub::Batch;
 use serde::{Deserialize, Serialize};
+use steak::hub::Batch;
 
 use crate::{
     helpers::get_denom_balance,

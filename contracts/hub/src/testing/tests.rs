@@ -7,7 +7,7 @@ use cosmwasm_std::{
 };
 use cw20::{Cw20ExecuteMsg, MinterResponse};
 use cw20_base::msg::InstantiateMsg as Cw20InstantiateMsg;
-use pfc_steak::hub::{
+use steak::hub::{
     Batch, CallbackMsg, ConfigResponse, ExecuteMsg, InstantiateMsg, PendingBatch, QueryMsg,
     ReceiveMsg, StateResponse, UnbondRequest, UnbondRequestsByBatchResponseItem,
     UnbondRequestsByUserResponseItem,
@@ -1234,7 +1234,7 @@ fn withdrawing_unbonded() {
     assert_eq!(
         err,
         StdError::NotFound {
-            kind: "pfc_steak::hub::Batch".to_string(),
+            kind: "steak::hub::Batch".to_string(),
         }
     );
 
@@ -1251,13 +1251,13 @@ fn withdrawing_unbonded() {
     assert_eq!(
         err1,
         StdError::NotFound {
-            kind: "pfc_steak::hub::UnbondRequest".to_string()
+            kind: "steak::hub::UnbondRequest".to_string()
         }
     );
     assert_eq!(
         err2,
         StdError::NotFound {
-            kind: "pfc_steak::hub::UnbondRequest".to_string()
+            kind: "steak::hub::UnbondRequest".to_string()
         }
     );
 
@@ -1291,7 +1291,7 @@ fn withdrawing_unbonded() {
     assert_eq!(
         err,
         StdError::NotFound {
-            kind: "pfc_steak::hub::Batch".to_string()
+            kind: "steak::hub::Batch".to_string()
         }
     );
 
@@ -1303,7 +1303,7 @@ fn withdrawing_unbonded() {
     assert_eq!(
         err,
         StdError::NotFound {
-            kind: "pfc_steak::hub::UnbondRequest".to_string()
+            kind: "steak::hub::UnbondRequest".to_string()
         }
     );
 }

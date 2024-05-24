@@ -4,7 +4,7 @@ use cosmwasm_std::{
     to_json_binary, Addr, BankMsg, Coin, CosmosMsg, Decimal, DepsMut, DistributionMsg, Env, Event,
     Order, ReplyOn, Response, StdError, StdResult, SubMsg, Uint128, WasmMsg,
 };
-use pfc_steak::{
+use steak::{
     hub::{Batch, CallbackMsg, FeeType, PendingBatch, UnbondRequest},
     hub_tf::{ExecuteMsg, InstantiateMsg, TokenFactoryType},
     DecimalCheckedOps,

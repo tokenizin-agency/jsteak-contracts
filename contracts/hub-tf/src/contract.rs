@@ -5,7 +5,7 @@ use cosmwasm_std::{
     StdError, StdResult,
 };
 use cw2::{get_contract_version, set_contract_version, ContractVersion};
-use pfc_steak::{
+use steak::{
     hub::{CallbackMsg, MigrateMsg, QueryMsg},
     hub_tf::{ExecuteMsg, InstantiateMsg, TokenFactoryType},
 };

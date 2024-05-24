@@ -7,7 +7,7 @@ use cosmwasm_std::{
 };
 use cw20::{Cw20ExecuteMsg, MinterResponse};
 use cw20_base::msg::InstantiateMsg as Cw20InstantiateMsg;
-use pfc_steak::{
+use steak::{
     hub::{
         Batch, CallbackMsg, Cw20HookMsg, ExecuteMsg, FeeType, InstantiateMsg, PendingBatch,
         UnbondRequest,

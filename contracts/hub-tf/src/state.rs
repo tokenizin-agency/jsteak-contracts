@@ -1,7 +1,7 @@
 use cosmwasm_std::{Addr, Coin, Decimal, StdError, StdResult, Storage, Uint128};
 use cw_item_set::Set;
 use cw_storage_plus::{Index, IndexList, IndexedMap, Item, MultiIndex};
-use pfc_steak::{
+use steak::{
     hub::{Batch, FeeType, PendingBatch, UnbondRequest},
     hub_tf::TokenFactoryType,
 };

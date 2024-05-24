@@ -1,5 +1,6 @@
 use std::{fmt::Display, str::FromStr};
 
+use cosmwasm_schema::{cw_serde, QueryResponses};
 use cosmwasm_std::{
     to_json_binary, Addr, Binary, Coin, CosmosMsg, Decimal, Empty, StdResult, Uint128, WasmMsg,
 };
@@ -8,13 +9,13 @@ use cw20_base::msg::InstantiateMarketingInfo as Cw20InstantiateMarketingInfo;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
+#[cw_serde]
 pub enum Cw20HookMsg {
     Distribute {},
     Transfer {},
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
+#[cw_serde]
 pub enum EnterpriseCw20HookMsg {
     Distribute {},
 }
@@ -179,26 +180,32 @@ impl CallbackMsg {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq, JsonSchema)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
+#[derive(QueryResponses)]
 pub enum QueryMsg {
     /// The contract's configurations. Response: `ConfigResponse`
+    #[returns(ConfigResponse)]
     Config {},
     /// The contract's current state. Response: `StateResponse`
+    #[returns(StateResponse)]
     State {},
     /// The current batch on unbonding requests pending submission. Response: `PendingBatch`
+    #[returns(PendingBatch)]
     PendingBatch {},
     /// Query an individual batch that has previously been submitted for unbonding but have not yet
     /// fully withdrawn. Response: `Batch`
+    #[returns(Batch)]
     PreviousBatch(u64),
     /// Enumerate all previous batches that have previously been submitted for unbonding but have
     /// not yet fully withdrawn. Response: `Vec<Batch>`
+    #[returns(Vec<Batch>)]
     PreviousBatches {
         start_after: Option<u64>,
         limit: Option<u32>,
     },
     /// Enumerate all outstanding unbonding requests in a given batch. Response:
     /// `Vec<UnbondRequestsResponseByBatchItem>`
+    #[returns(UnbondRequestsByBatchResponseItem)]
     UnbondRequestsByBatch {
         id: u64,
         start_after: Option<String>,
@@ -206,6 +213,7 @@ pub enum QueryMsg {
     },
     /// Enumerate all outstanding unbonding requests from given a user. Response:
     /// `Vec<UnbondRequestsByUserResponseItem>`
+    #[returns(Vec<UnbondRequestsByUserResponseItem>)]
     UnbondRequestsByUser {
         user: String,
         start_after: Option<u64>,

@@ -5,7 +5,7 @@ use std::{
 
 use cosmwasm_std::{Addr, Decimal, Deps, Env, Order, StdResult, Uint128};
 use cw_storage_plus::{Bound, CwIntKey};
-use pfc_steak::hub::{
+use steak::hub::{
     Batch, ConfigResponse, PendingBatch, StateResponse, UnbondRequestsByBatchResponseItem,
     UnbondRequestsByUserResponseItem,
 };

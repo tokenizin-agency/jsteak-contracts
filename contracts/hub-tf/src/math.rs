@@ -1,7 +1,7 @@
 use std::{cmp, cmp::Ordering, collections::HashMap};
 
 use cosmwasm_std::Uint128;
-use pfc_steak::hub::Batch;
+use steak::hub::Batch;
 
 use crate::types::{Delegation, Redelegation, Undelegation};
 

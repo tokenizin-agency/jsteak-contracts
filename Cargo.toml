@@ -1,8 +1,24 @@
 [workspace]
-members = ["contracts/token", "contracts/hub", "contracts/hub-tf", "packages/*"]
-resolver = '1'
+resolver = '2'
+members = [
+    "contracts/hub",
+    "contracts/hub-tf",
+    "contracts/token",
+    "packages/steak",
+]
 
-[profile.release.package.pfc-steak]
+edition       = "2021"
+
+[workspace.dependencies]
+# packages
+steak                = { path = "./packages/steak" }
+# contracts
+hub               = { path = "./contracts/hub" }
+hub-tf          = { path = "./contracts/hub-tf" }
+token          = { path = "./contracts/token" }
+
+
+[profile.release.package.steak]
 opt-level = 3
 debug = false
 debug-assertions = false

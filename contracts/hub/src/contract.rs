@@ -6,7 +6,7 @@ use cosmwasm_std::{
 };
 use cw2::{get_contract_version, set_contract_version, ContractVersion};
 use cw20::Cw20ReceiveMsg;
-use pfc_steak::hub::{
+use steak::hub::{
     CallbackMsg, ExecuteMsg, FeeType, InstantiateMsg, MigrateMsg, QueryMsg, ReceiveMsg,
 };
 
